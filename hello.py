@@ -17,11 +17,12 @@ def main():
     tmp = []    
     text = request.args.get('searchitem')
     if not text:
-        return render_template("index.html", value = text, points=json.dumps(tmp))
+        return render_template("index.html", value = "", points=json.dumps(tmp), md=0.1)
     processed_text = text.upper()
     location = [float(i) for i in text.split(',')]
     distance = float(request.args.get('distance'))/1000 if request.args.get('distance') else 0.1
     carpark_info = get_car_park_information()
+    name = request.args.get('name')
     for p in data:
         d = get_distance([p["x_coord"], p["y_coord"]], location)
         if p["car_park_no"] in carpark_info and int(carpark_info[p["car_park_no"]]["lots_available"]) > 0: 
@@ -29,7 +30,7 @@ def main():
             p["info"] = carpark_info[p["car_park_no"]]
             tmp.append(p)
     tmp = sorted(tmp, key=lambda x: x["distance"])[:5]
-    return render_template("index.html", value = processed_text, points=json.dumps(tmp), md=tmp[-1]["distance"])
+    return render_template("index.html", value = processed_text, points=json.dumps(tmp), md=tmp[-1]["distance"], name=name if name else text)
 
 def get_car_park_information():
     r = requests.get("https://api.data.gov.sg/v1/transport/carpark-availability")

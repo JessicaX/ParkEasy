@@ -1,7 +1,28 @@
 var res = str?str.split(","):"";
 var v0 = parseFloat(res[0]);
 var v1 = parseFloat(res[1]);
-document.getElementById("demo").innerHTML = v0 + "<br>" + v1; 
+document.getElementById("demo").innerHTML = v0 + "<br>" + v1 + "<br>" + name;
+function init(){
+    initAutoComplete();
+    initMap();
+}
+
+function initAutoComplete(){
+      var input = document.getElementById('location');
+      autocomplete = new google.maps.places.Autocomplete(input);
+      autocomplete.setComponentRestrictions({"country": ["sg"]});
+      autocomplete.setFields(['geometry','name', 'address_components', 'icon']);
+      autocomplete.addListener('place_changed', function(){
+        var place = autocomplete.getPlace();
+        if(!place.geometry){
+            window.alert("No details available for input: '" + place.name + "'");
+            return;
+        }
+        lat = place.geometry.location.lat();
+        lng = place.geometry.location.lng();
+        window.location.href = `/?searchitem=${lat},${lng}&name=${place.name}`;
+      });
+}
 
 function initMap() {
     var map = set_my_position();
@@ -44,6 +65,14 @@ function set_my_position(){
         zoom: zoom,
         center: myLatlng
     });
+    var input = document.getElementById('pac-input');
+    var searchBox = new google.maps.places.SearchBox(input);
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    
+    map.addListener("bounds_changed", function(){
+        searchBox.setBounds(map.getBounds())
+    });
+
     var marker = new google.maps.Marker({
         position: new google.maps.LatLng(myLatlng.lat, myLatlng.lng),
         map: map,

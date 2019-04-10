@@ -28,7 +28,8 @@ def main():
         if d < distance:
             p["distance"] = d
             tmp.append(p)
-    tmp = sorted(tmp, key=lambda x: x["distance"])[:5]
+    # tmp = sorted(tmp, key=lambda x: x["distance"])[:5]
+    tmp = sorted(tmp, key=lambda x: x["distance"])[:10]
     return render_template("index.html", value = processed_text, points=json.dumps(tmp))
 
 def get_distance(origin, destination):

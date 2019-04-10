@@ -10,6 +10,21 @@ function initMap() {
             position: new google.maps.LatLng(p.x_coord, p.y_coord),
             map: map,
         })
+        var infoWindow = new google.maps.InfoWindow({
+            content: `<div class="row">
+                            <div class="col-md-6"><b>Address</b></div>
+                            <div class="col-md-6">${p.address}</div>
+                            <div class="col-md-6"><b>Type</b></div>
+                            <div class="col-md-6">${p.car_park_type}</div>
+                            <div class="col-md-6"><b>Is Free</b></div>
+                            <div class="col-md-6">${p.free_parking}</div>
+                            <div class="col-md-6"><b>System</b></div>
+                            <div class="col-md-6">${p.type_of_parking_system}</div>
+                        </div>`
+        });
+        marker.addListener("click", function(){
+            infoWindow.open(map, marker);
+        });
     });
 }
 

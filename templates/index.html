@@ -15,15 +15,22 @@
 <body>
     <div class="container">
         <div class="row mt-3">
-            <form class="form-inline my-4 my-lg-0" method="POST">
-              <input class="form-control mr-sm-2" style="width: 600px;" type="search" name="searchitem" placeholder="Search" aria-label="Search">
+            <form class="form-inline my-4 my-lg-0" method="GET">
+              <input class="form-control mr-sm-2" style="width: 600px;" type="search" name="searchitem" placeholder="Search" aria-label="Search" value="{{value}}">
               <button class="btn btn-outline-success mr-2 my-sm-0" type="submit">Search by Coordinates</button>
               <button type="button" class="btn btn-danger" type="locate">Locate me now</button>
           </form>
         </div>
         <div class="row mt-3">
-            <div class="col-md">
+            <div class="col-md-3">
                 <h3 class="text-muted">Map</h3>
+            </div>
+            <div>
+                <span>Radius: </span>
+                <span class="btn btn-primary" onclick="setDistance(500)">500m</span>
+                <span class="btn btn-primary" onclick="setDistance(1000)">1000m</span>
+                <span class="btn btn-primary" onclick="setDistance(2000)">2000m</span>
+                <span class="btn btn-primary" onclick="setDistance(3000)">3000m</span>
             </div>
         </div>
         <div class="row mt-3">
@@ -36,55 +43,31 @@
               <h1 class="display-4">Your searched location is: </h1>
               <p class="lead" id="demo"></p>
               <script>
-                    var str = '{{value}}';
-                    var res = str.split(",");
-                    var v0 = parseFloat(res[0]);
-                    var v1 = parseFloat(res[1]);
-                    document.getElementById("demo").innerHTML = v0 + "<br>" + v1; 
-                  
-                    function initMap() {
-                      alert(123)
-                      var myLatlng;
-                      if( v0 !== null || v1 !== null ) {
-                        myLatlng = {lat: v0, lng: v1};
-                      } else {
-                        myLatlng = {lat: 1.352660, lng: 103.861821};
-                      }
-
-                      var map = new google.maps.Map(document.getElementById('googleMap'), {
-                        zoom: 12,
-                        center: myLatlng
-                      });
-
-                      var marker = new google.maps.Marker({
-                        position: myLatlng,
-                        map: map,
-                        title: 'Click to zoom'
-                      });
-
-                      map.addListener('center_changed', function() {
-                        window.setTimeout(function() {
-                          map.panTo(marker.getPosition());
-                        }, 3000);
-                      });
-
-                      var cityCircle = new google.maps.Circle({
-                        strokeColor: '#FF0000',
-                        strokeOpacity: 0.8,
-                        strokeWeight: 1,
-                        fillColor: '#FF0000',
-                        fillOpacity: 0.35,
-                        map: map,
-                        center: {lat: v0, lng: v1},
-                        radius: 1500
-                      });
-
-                      marker.addListener('click', function() {
-                        map.setZoom(15);
-                        map.setCenter(marker.getPosition());
-                      });
-                    }
+                var urlParams = new URLSearchParams(window.location.search)
+                var str = '{{value}}';
+                var points = {{points | safe}}
+                var circleSize = urlParams.get("distance")?urlParams.get("distance"):100;
+                var zoom = 17;
+                switch(circleSize){
+                  case "500":
+                    zoom = 15;
+                    break;
+                  case "1000":
+                    zoom = 13;
+                    break;
+                  case "2000":
+                  case "3000":
+                    zoom = 12;
+                    break;
+                  default:
+                    zoom = 17;
+                    break;
+                }
+                function setDistance(d){
+                  window.location.href = "/?searchitem="+str+"&distance=" + d;
+                }
               </script>
+              <script src="{{url_for('static', filename='js/main.js') }}"></script>
               <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDq2LBjxsTUkik5pE_G21JBHTR7Wx-xzF4&callback=initMap"></script>
             </div>
         </div>

@@ -12,26 +12,24 @@ data = json.load(f)
 # if __name__ == "__main__":
 #     app.run()
 #########################
-@app.route("/")
+@app.route('/')
 def main():
-    return render_template('index.html')
-
-@app.route('/', methods=['POST'])
-def my_form_post():
-    text = request.form['searchitem']
+    tmp = []    
+    text = request.args.get('searchitem')
+    print("text", text)
+    if not text:
+        print("here", text)    
+        return render_template("index.html", value = text, points=json.dumps(tmp))
     processed_text = text.upper()
-    return render_template("index.html", value = processed_text)
-
-@app.route('/get', methods=['GET'])
-def get_closest_park():
-    location = [float(i) for i in request.args.get('location').split(',')]
-    distance = float(request.args.get('distance'))
-    tmp = []
+    location = [float(i) for i in text.split(',')]
+    distance = float(request.args.get('distance'))/1000 if request.args.get('distance') else 0.1
     for p in data:
         d = get_distance([p["x_coord"], p["y_coord"]], location)
         if d < distance:
+            p["distance"] = d
             tmp.append(p)
-    return jsonify(tmp)
+    tmp = sorted(tmp, key=lambda x: x["distance"])[:5]
+    return render_template("index.html", value = processed_text, points=json.dumps(tmp))
 
 def get_distance(origin, destination):
     lat1, lon1 = origin

@@ -16,9 +16,7 @@ data = json.load(f)
 def main():
     tmp = []    
     text = request.args.get('searchitem')
-    print("text", text)
     if not text:
-        print("here", text)    
         return render_template("index.html", value = text, points=json.dumps(tmp))
     processed_text = text.upper()
     location = [float(i) for i in text.split(',')]
@@ -27,7 +25,6 @@ def main():
     for p in data:
         d = get_distance([p["x_coord"], p["y_coord"]], location)
         if p["car_park_no"] in carpark_info and int(carpark_info[p["car_park_no"]]["lots_available"]) > 0: 
-            print("here")
             p["distance"] = d
             p["info"] = carpark_info[p["car_park_no"]]
             tmp.append(p)
@@ -39,9 +36,7 @@ def get_car_park_information():
     data = json.loads(r.text)
     tmp = {}
     for ci in data["items"][0]["carpark_data"]:
-        print(ci)
         tmp[ci["carpark_number"]] = ci["carpark_info"][0]
-    print(tmp)
     return tmp
 
 def get_distance(origin, destination):

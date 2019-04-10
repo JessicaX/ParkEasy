@@ -25,13 +25,6 @@
             <div class="col-md-3">
                 <h3 class="text-muted">Map</h3>
             </div>
-            <div>
-                <span>Radius: </span>
-                <span class="btn btn-primary" onclick="setDistance(500)">500m</span>
-                <span class="btn btn-primary" onclick="setDistance(1000)">1000m</span>
-                <span class="btn btn-primary" onclick="setDistance(2000)">2000m</span>
-                <span class="btn btn-primary" onclick="setDistance(3000)">3000m</span>
-            </div>
         </div>
         <div class="row mt-3">
             <div class="col-md">
@@ -57,11 +50,8 @@
                 }else if(circleSize < 3000){
                   zoom = 12;
                 }
-                function setDistance(d){
-                  window.location.href = "/?searchitem="+str+"&distance=" + d;
-                }
               </script>
-              <script src="{{url_for('static', filename='js/main.js') }}"></script>
+              <script src="{{url_for('static', filename='js/main.js')}}?{{range(100000000000000)|random}} "></script>
               <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDq2LBjxsTUkik5pE_G21JBHTR7Wx-xzF4&callback=initMap"></script>
             </div>
         </div>

@@ -24,8 +24,11 @@ function initMap() {
                             <div class="col-md-6"><span class="text-success">${p.info.lots_available}</span>/${p.info.total_lots}</div>
                         </div>`
         });
-        marker.addListener("click", function(){
+        marker.addListener("mouseover", function(){
             infoWindow.open(map, marker);
+        });
+        marker.addListener("mouseout", function(){
+            infoWindow.close();
         });
     });
 }

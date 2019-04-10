@@ -31,7 +31,6 @@ def main():
             p["distance"] = d
             p["info"] = carpark_info[p["car_park_no"]]
             tmp.append(p)
-
     tmp = sorted(tmp, key=lambda x: x["distance"])[:5]
     return render_template("index.html", value = processed_text, points=json.dumps(tmp), md=tmp[-1]["distance"])
 

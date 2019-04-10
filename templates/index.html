@@ -15,20 +15,11 @@
 <body>
     <div class="container">
         <div class="row mt-3">
-            <!-- <input class="form-control mr-sm-2" style="width: 600px;" type="search" name="searchitem" placeholder="Search" aria-label="Search"> -->
             <form class="form-inline my-4 my-lg-0" method="POST">
               <input class="form-control mr-sm-2" style="width: 600px;" type="search" name="searchitem" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-success mr-2 my-sm-0" type="submit">Search by Coordinates</button>
               <button type="button" class="btn btn-danger" type="locate">Locate me now</button>
-              <!-- <div class="btn-toolbar pull right">
-                <button type="button" class="btn btn-primary mr-sm-2" type="submit">Search the location by coordinates</button>
-                <button type="button" class="btn btn-danger">Locate me now</button>
-              </div> -->
           </form>
-            <!-- <div class="btn-toolbar pull right">
-                <button type="button" class="btn btn-primary mr-sm-2">Search the location by coordinates</button>
-                <button type="button" class="btn btn-danger">Locate me now</button>
-            </div> -->
         </div>
         <div class="row mt-3">
             <div class="col-md">
@@ -37,30 +28,12 @@
         </div>
         <div class="row mt-3">
             <div class="col-md">
-                <!--Google map-->
-                <!-- <div id="map-container-google-1" class="z-depth-1-half map-container" style="height: 500px">
-                    <iframe src="https://maps.google.com/maps?q=singapore&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0"
-                      style="border:0" allowfullscreen></iframe>
-                </div> -->
                 <div id="googleMap" style="width:100%;height:400px;"></div>
-
-                <!-- <script>
-                    function myMap() {
-                        var mapProp= {
-                            center:new google.maps.LatLng(1.352660, 103.861821),
-                            zoom:11,
-                        };
-                        var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
-                    }
-                </script>
-                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDq2LBjxsTUkik5pE_G21JBHTR7Wx-xzF4&callback=myMap"></script> -->
             </div>
         </div>
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
               <h1 class="display-4">Your searched location is: </h1>
-              <!-- <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p> -->
-              <!-- <p class="lead" id="demo">{{value}}</p> -->
               <p class="lead" id="demo"></p>
               <script>
                     var str = '{{value}}';
@@ -70,16 +43,16 @@
                     document.getElementById("demo").innerHTML = v0 + "<br>" + v1; 
                   
                     function initMap() {
+                      alert(123)
                       var myLatlng;
                       if( v0 !== null || v1 !== null ) {
                         myLatlng = {lat: v0, lng: v1};
                       } else {
                         myLatlng = {lat: 1.352660, lng: 103.861821};
                       }
-                      // var myLatlng = {lat: v0, lng: v1};
 
                       var map = new google.maps.Map(document.getElementById('googleMap'), {
-                        zoom: 13,
+                        zoom: 12,
                         center: myLatlng
                       });
 
@@ -90,8 +63,6 @@
                       });
 
                       map.addListener('center_changed', function() {
-                        // 3 seconds after the center of the map has changed, pan back to the
-                        // marker.
                         window.setTimeout(function() {
                           map.panTo(marker.getPosition());
                         }, 3000);
@@ -112,34 +83,7 @@
                         map.setZoom(15);
                         map.setCenter(marker.getPosition());
                       });
-
-                      
                     }
-                    
-                    
-                    // var myLatlng = {lat: v0, lng: v1};
-                    // var map = new google.maps.Map(document.getElementById('googleMap'), {
-                    //   zoom: 12,
-                    //   center: myLatlng
-                    // });
-                    // var marker = new google.maps.Marker({
-                    //   position: myLatlng,
-                    //   map: map,
-                    //   title: 'Click to zoom'
-                    // });
-
-                    // map.addListener('center_changed', function() {
-                    //   // 3 seconds after the center of the map has changed, pan back to the
-                    //   // marker.
-                    //   window.setTimeout(function() {
-                    //     map.panTo(marker.getPosition());
-                    //   }, 3000);
-                    // });
-
-                    // marker.addListener('click', function() {
-                    //   map.setZoom(8);
-                    //   map.setCenter(marker.getPosition());
-                    // });
               </script>
               <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDq2LBjxsTUkik5pE_G21JBHTR7Wx-xzF4&callback=initMap"></script>
             </div>
@@ -148,28 +92,12 @@
 </body>
  
 </html>
-<!-- <style>
-  .map-container{
-    overflow:hidden;
-    padding-bottom:56.25%;
-    position:relative;
-    height:0;
-  }
-  .map-container iframe{
-    left:0;
-    top:0;
-    height:100%;
-    width:100%;
-    position:absolute;
-  }
-</style> -->
+
 <style>
-    /* Always set the map height explicitly to define the size of the div
-     * element that contains the map. */
     #map {
       height: 100%;
     }
-    /* Optional: Makes the sample page fill the window. */
+
     html, body {
       height: 100%;
       margin: 0;

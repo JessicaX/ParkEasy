@@ -46,22 +46,16 @@
                 var urlParams = new URLSearchParams(window.location.search)
                 var str = '{{value}}';
                 var points = {{points | safe}}
-                var circleSize = urlParams.get("distance")?urlParams.get("distance"):100;
+                var circleSize = {{md}}*1000;
                 var zoom = 17;
-                switch(circleSize){
-                  case "500":
-                    zoom = 15;
-                    break;
-                  case "1000":
-                    zoom = 13;
-                    break;
-                  case "2000":
-                  case "3000":
-                    zoom = 12;
-                    break;
-                  default:
-                    zoom = 17;
-                    break;
+                if(circleSize < 100){
+                  zoom = 17;
+                }else if(circleSize < 500){
+                  zoom = 15;
+                }else if(circleSize < 1000){
+                  zoom = 13;
+                }else if(circleSize < 3000){
+                  zoom = 12;
                 }
                 function setDistance(d){
                   window.location.href = "/?searchitem="+str+"&distance=" + d;

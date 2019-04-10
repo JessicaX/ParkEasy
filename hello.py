@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, jsonify
-import json, math
+import json, math, requests
 # from flask.ext.googlemaps import GoogleMaps
 app = Flask(__name__)
 f = open('object.json', 'r')
@@ -23,13 +23,27 @@ def main():
     processed_text = text.upper()
     location = [float(i) for i in text.split(',')]
     distance = float(request.args.get('distance'))/1000 if request.args.get('distance') else 0.1
+    carpark_info = get_car_park_information()
     for p in data:
         d = get_distance([p["x_coord"], p["y_coord"]], location)
-        if d < distance:
+        if p["car_park_no"] in carpark_info and int(carpark_info[p["car_park_no"]]["lots_available"]) > 0: 
+            print("here")
             p["distance"] = d
+            p["info"] = carpark_info[p["car_park_no"]]
             tmp.append(p)
+
     tmp = sorted(tmp, key=lambda x: x["distance"])[:5]
-    return render_template("index.html", value = processed_text, points=json.dumps(tmp))
+    return render_template("index.html", value = processed_text, points=json.dumps(tmp), md=tmp[-1]["distance"])
+
+def get_car_park_information():
+    r = requests.get("https://api.data.gov.sg/v1/transport/carpark-availability")
+    data = json.loads(r.text)
+    tmp = {}
+    for ci in data["items"][0]["carpark_data"]:
+        print(ci)
+        tmp[ci["carpark_number"]] = ci["carpark_info"][0]
+    print(tmp)
+    return tmp
 
 def get_distance(origin, destination):
     lat1, lon1 = origin

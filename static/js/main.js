@@ -20,6 +20,8 @@ function initMap() {
                             <div class="col-md-6">${p.free_parking}</div>
                             <div class="col-md-6"><b>System</b></div>
                             <div class="col-md-6">${p.type_of_parking_system}</div>
+                            <div class="col-md-6">Lots Available</div>
+                            <div class="col-md-6"><span class="text-success">${p.info.lots_available}</span>/${p.info.total_lots}</div>
                         </div>`
         });
         marker.addListener("click", function(){
